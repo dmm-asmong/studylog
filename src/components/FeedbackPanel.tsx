@@ -1,7 +1,7 @@
 import { AiFeedback } from '@/types';
 import { Sparkles, TrendingUp } from 'lucide-react';
 
-const UNDERSTANDING_CONFIG = {
+const UNDERSTANDING_CONFIG: Record<AiFeedback['understanding'], { color: string; bg: string }> = {
   '잘 이해했어요': { color: '#10B981', bg: '#064E3B' },
   '이해 중이에요': { color: '#F59E0B', bg: '#451A03' },
   '더 공부가 필요해요': { color: '#EF4444', bg: '#450A0A' },
