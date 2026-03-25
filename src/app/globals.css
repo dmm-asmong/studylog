@@ -1,1 +1,40 @@
 @import "tailwindcss";
+
+:root {
+  --bg: #0F1117;
+  --card: #1A1D27;
+  --card-hover: #1F2335;
+  --border: #2A2D3E;
+  --accent: #10B981;
+  --accent-light: #34D399;
+  --accent-dim: #064E3B;
+  --text: #E8EAF0;
+  --text-sub: #6B7280;
+  --text-muted: #3F4350;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: var(--font-bebas), cursive;
+}
+
+/* 스크롤바 */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
