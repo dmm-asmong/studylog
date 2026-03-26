@@ -11,24 +11,19 @@ interface Props {
 }
 
 export default function JournalCard({ journal }: Props) {
-  const color = SUBJECT_COLORS[journal.subjectName] ?? '#6B7280';
+  const color = SUBJECT_COLORS[journal.subjectName] ?? '#9E8E8E';
   const date = new Date(journal.studyDate).toLocaleDateString('ko-KR', {
     month: 'long', day: 'numeric', weekday: 'short',
   });
 
   return (
     <Link href={`/journal/${journal.id}`}>
-      <div
-        className="rounded-xl p-4 transition-all cursor-pointer"
-        style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
-        onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--accent)')}
-        onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}
-      >
-        <div className="flex items-start justify-between gap-2">
+      <div className="card-glass p-4 cursor-pointer">
+        <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <span
               className="inline-block text-xs font-medium px-2 py-0.5 rounded-full mb-2"
-              style={{ background: `${color}20`, color }}
+              style={{ background: `${color}15`, color, border: `1px solid ${color}20` }}
             >
               {journal.subjectName}
             </span>
@@ -39,17 +34,22 @@ export default function JournalCard({ journal }: Props) {
               {journal.content}
             </p>
           </div>
+
           {journal.aiFeedback && (
             <div className="text-right shrink-0">
-              <div className="font-display text-2xl" style={{ color: 'var(--accent)', lineHeight: 1 }}>
+              <div
+                className="font-display text-3xl font-bold"
+                style={{ color: 'var(--accent)', lineHeight: 1 }}
+              >
                 {journal.aiFeedback.score}
               </div>
-              <div className="text-xs mt-0.5" style={{ color: 'var(--text-sub)' }}>
+              <div className="text-xs mt-1" style={{ color: 'var(--text-sub)' }}>
                 {SCORE_LABEL[journal.aiFeedback.score]}
               </div>
             </div>
           )}
         </div>
+
         <div className="mt-3 text-xs" style={{ color: 'var(--text-muted)' }}>
           {date}
         </div>

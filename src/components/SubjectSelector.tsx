@@ -29,7 +29,7 @@ export default function SubjectSelector({ subjects, selected, onChange, onAddSub
   }
 
   return (
-    <div className="relative">
+    <div className="relative" style={{ zIndex: open ? 50 : 'auto' }}>
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -53,17 +53,17 @@ export default function SubjectSelector({ subjects, selected, onChange, onAddSub
       </button>
 
       {open && (
-        <div className="absolute top-full mt-1 w-full rounded-xl overflow-hidden z-10"
-          style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+        <div className="absolute top-full mt-1 w-full rounded-xl overflow-hidden z-50"
+          style={{ background: '#FFFFFF', border: '1px solid var(--border)', boxShadow: '0 12px 40px rgba(61,43,43,0.15)', isolation: 'isolate' }}>
           {subjects.map(subject => (
             <button
               key={subject.id}
               type="button"
               onClick={() => { onChange(subject); setOpen(false); }}
               className="w-full flex items-center gap-2 px-4 py-3 text-sm text-left transition-colors"
-              style={{ color: 'var(--text)' }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'var(--card-hover)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+              style={{ color: 'var(--text)', background: '#FFFFFF' }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#F5F0EA')}
+              onMouseLeave={e => (e.currentTarget.style.background = '#FFFFFF')}
             >
               <span className="w-2 h-2 rounded-full" style={{ background: SUBJECT_COLORS[subject.name] ?? '#6B7280' }} />
               {subject.name}

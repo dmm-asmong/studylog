@@ -20,4 +20,9 @@ export type AiFeedback = {
   score: number; // 1-5
   summary: string;
   growth: string | null;
+  childFriendlyFeedback?: string; // 초등학생 눈높이 설명에 대한 피드백
+  // 키워드 분석 결과
+  keywordsFound?: string[];    // 학생이 사용한 핵심 키워드
+  keywordsMissed?: string[];   // 누락된 핵심 키워드
+  keywordScore?: number;       // 0-100, 키워드 포함 비율
 };

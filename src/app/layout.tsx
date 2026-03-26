@@ -1,11 +1,18 @@
 import type { Metadata } from 'next';
-import { Bebas_Neue, Noto_Sans_KR } from 'next/font/google';
+import { Playfair_Display, DM_Sans, Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
 
-const bebasNeue = Bebas_Neue({
-  weight: '400',
+const playfair = Playfair_Display({
+  weight: ['400', '700'],
   subsets: ['latin'],
-  variable: '--font-bebas',
+  variable: '--font-playfair',
+  display: 'swap',
+});
+
+const dmSans = DM_Sans({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-dm',
   display: 'swap',
 });
 
@@ -27,8 +34,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={`${bebasNeue.variable} ${notoSansKR.variable}`}>
-      <body style={{ fontFamily: 'var(--font-noto), sans-serif' }}>{children}</body>
+    <html lang="ko" className={`${playfair.variable} ${dmSans.variable} ${notoSansKR.variable}`}>
+      <body style={{ fontFamily: 'var(--font-dm), var(--font-noto), sans-serif' }}>{children}</body>
     </html>
   );
 }
