@@ -4,17 +4,48 @@ import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, PenLine } from 'lucide-react';
 import FeedbackPanel from '@/components/FeedbackPanel';
-import { getJournalById } from '@/lib/storage';
+import { createClient } from '@/lib/supabase/client';
 import { SUBJECT_COLORS } from '@/lib/constants';
 import { Journal } from '@/types';
 
 export default function JournalDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const supabase = createClient();
   const [journal, setJournal] = useState<Journal | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setJournal(getJournalById(id));
+    async function load() {
+      const { data } = await supabase
+        .from('journals')
+        .select('id, title, content, study_date, created_at, ai_feedback, subjects(id, name, color)')
+        .eq('id', id)
+        .single();
+
+      if (data) {
+        setJournal({
+          id: data.id,
+          subjectId: (data.subjects as any)?.id ?? '',
+          subjectName: (data.subjects as any)?.name ?? '',
+          title: data.title,
+          content: data.content,
+          studyDate: data.study_date,
+          createdAt: data.created_at,
+          aiFeedback: data.ai_feedback ?? null,
+        });
+      }
+      setLoading(false);
+    }
+    load();
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-6 h-6 rounded-full border-2 animate-spin" style={{ borderColor: 'var(--accent)', borderTopColor: 'transparent' }} />
+      </div>
+    );
+  }
 
   if (!journal) {
     return (
@@ -30,7 +61,7 @@ export default function JournalDetailPage({ params }: { params: Promise<{ id: st
   }
 
   const color = SUBJECT_COLORS[journal.subjectName] ?? '#9E8E8E';
-  const date = new Date(journal.studyDate).toLocaleDateString('ko-KR', {
+  const date = new Date(journal.studyDate + 'T00:00:00').toLocaleDateString('ko-KR', {
     year: 'numeric', month: 'long', day: 'numeric', weekday: 'long',
   });
 
@@ -50,9 +81,7 @@ export default function JournalDetailPage({ params }: { params: Promise<{ id: st
         <Link href="/dashboard" className="p-1 rounded-lg transition-all" style={{ color: 'var(--text-sub)' }}>
           <ArrowLeft size={20} />
         </Link>
-        <span className="font-semibold text-sm" style={{ color: 'var(--text)' }}>
-          일지 상세
-        </span>
+        <span className="font-semibold text-sm" style={{ color: 'var(--text)' }}>일지 상세</span>
       </header>
 
       <main className="max-w-2xl mx-auto px-6 py-8 space-y-6 relative">
@@ -63,9 +92,7 @@ export default function JournalDetailPage({ params }: { params: Promise<{ id: st
           >
             {journal.subjectName}
           </span>
-          <h1 className="text-xl font-bold mb-2" style={{ color: 'var(--text)' }}>
-            {journal.title}
-          </h1>
+          <h1 className="text-xl font-bold mb-2" style={{ color: 'var(--text)' }}>{journal.title}</h1>
           <div className="flex items-center gap-1.5 text-xs" style={{ color: 'var(--text-muted)' }}>
             <Calendar size={12} />
             {date}
